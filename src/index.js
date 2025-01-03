@@ -11,6 +11,7 @@ import ProductDetail from './pages/ProductDetail';
 import NewProduct from './pages/NewProduct';
 import MyCart from './pages/MyCart';
 import ProtectedRoute from './pages/ProtectedRoute';
+import GuestBook from './pages/GuestBook';
 
 const router = createBrowserRouter([
   {
@@ -25,6 +26,10 @@ const router = createBrowserRouter([
       { 
         path: '/about', 
         element: <About /> 
+      },
+      { 
+        path: '/guestbook', 
+        element: <GuestBook /> 
       },
       { 
         path: '/products', 

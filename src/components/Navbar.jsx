@@ -19,7 +19,7 @@ export default function Navbar() {
             <nav className='flex items-center gap-4 font-semibold'>
                 <Link to='/'>HOME</Link>
                 <Link to='/about'>ABOUT</Link>
-                <Link to='/products/new'>방명록</Link>
+                <Link to='/guestbook'>방명록</Link>
                 {user && user.isAdmin && (
                     <Link to='/products/new' className='text-2xl'>
                         <BsFillPencilFill />
