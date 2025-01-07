@@ -14,6 +14,16 @@ react-query
 ## 설치
 
 ```
+npm install yarn  
+
+npm install -D tailwindcss
+
+yarn add react-idcons  
+
+yarn add react-router-dom  
+
+yarn add firebase  
+
 npm install uuid
 yarn add uuid
 
