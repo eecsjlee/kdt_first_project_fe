@@ -55,10 +55,12 @@ export default function Home() {
             );
             const tm = filteredData.map((item) => (
                 <GallaryCard
-                    key={item.cpId}
-                    title={item.csNm}
-                    location={item.addr}
-                    Ttag={`충전기 상태: ${item.cpStat}`}
+                key={`${item.csId}-${item.cpId}`}
+                title={item.csNm}  // 충전소 명칭
+                location={item.addr}  // 주소
+                cpType={item.cpTp}  // 충전방식
+                chargeStatus={item.cpStat}  // 충전기 상태
+                statUpdateTime={item.statUpdatetime}  // 확인일자
                 />
             ));
             setCards(tm);
@@ -86,11 +88,14 @@ export default function Home() {
     useEffect(() => {
         if (!tdata) return
         console.log(tdata)
-        let tm = tdata.map(item => <GallaryCard 
-            key={item.cpId}
-            title={item.csNm}
-            location={item.addr}
-            Ttag={`충전기 상태: ${item.cpStat}`}
+        let tm = tdata.map(item => 
+            <GallaryCard
+            key={`${item.csId}-${item.cpId}`}
+            title={item.csNm}  // 충전소 명칭
+            location={item.addr}  // 주소
+            cpType={item.cpTp}  // 충전방식
+            chargeStatus={item.cpStat}  // 충전기 상태
+            statUpdateTime={item.statUpdatetime}  // 확인일자
         />)
         setCards(tm)
     }, [tdata])

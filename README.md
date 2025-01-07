@@ -8,8 +8,9 @@ npm: 10.8.2
 yarn : 1.22.22  
 Tailwindcss: 3.4.17  
 Firebase 사용  
-uuid
-react-query
+uuid  
+react-query  
+  
 
 ## 설치
 
@@ -28,8 +29,11 @@ npm install uuid
 yarn add uuid
 
 npm i @tanstack/react-query
-yarn add @tanstack/react-query
+yarn add @tanstack/react-query  
+  
+yarn add @tanstack/react-query-devtools
 ```
+  
 
 ## 참고자료
 
@@ -38,7 +42,7 @@ https://hihiha2.tistory.com/21
 
 https://www.npmjs.com/
 https://tanstack.com/query/latest/docs/framework/react/installation
-
+  
 
 ## 메모
 

@@ -21,8 +21,7 @@ const app = initializeApp(firebaseConfig);
 const auth = getAuth();
 const provider = new GoogleAuthProvider();
 const database = getDatabase(app);
-let date = new Date();
-date = date.toLocaleDateString();
+let date = new Date().toLocaleDateString();
 
 export function login() {
   signInWithPopup(auth, provider).catch(console.error);
@@ -54,11 +53,15 @@ async function adminUser(user) {
 
 export async function postBoard(contents) {
   const id = uuid();
-  set(ref(database, `board/${id}`), {
-    ...contents, 
+  const user = auth.currentUser;
+  const post = {
+    ...contents,
     id,
-    price: parseInt(product.price),
     date,
-    user: User.displayName,
-  });
+    user: {
+      name: user.displayName,
+      photoURL: user.photoURL,
+    },
+  };
+  await set(ref(database, `board/${id}`), post);
 }
