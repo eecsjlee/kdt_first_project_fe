@@ -2,12 +2,16 @@ import React from 'react';
 import { useEffect, useState, useRef } from "react";
 import TailSelect from '../ui/TailSelect';
 import GallaryCard from '../ui/GallaryCard';
+import { v4 as uuid } from 'uuid';
 
 export default function Home() {
-    const [tdata, setTdata] = useState();       //부산 축제 정보
-    const [ops, setOps] = useState();           //축제 구정보
-    const selRef = useRef();                   //옵션 선택
-    const [cards, setCards] = useState()
+    const [tdata, setTdata] = useState(); // 전기차 충전소 정보
+    const [siOptions, setSiOptions] = useState(); // 광역자치단체 옵션
+    const [guOptions, setGuOptions] = useState(); // 기초자치단체 옵션
+    const siRef = useRef(); // 광역자치단체 선택 Ref
+    const guRef = useRef(); // 기초자치단체 선택 Ref
+    const [cards, setCards] = useState();
+    const uniqueKey = uuid();
 
     // data fetch
     const getFetchData = (url) => {
@@ -15,83 +19,116 @@ export default function Home() {
             .then(resp => resp.json())
             .then(data => {
                 console.log("fetch", data)
-                setTdata(data.getFestivalKr.item)
+                setTdata(data.data)
             })
             ;
 
         console.log("getFetchData", url)
     }
 
-    //구선택
+    // 광역자치단체 선택 핸들러
+    const handleSiSelect = (e) => {
+        e.preventDefault();
+        const selectedSi = siRef.current.value;
+        if (selectedSi) {
+            const guList = [
+                ...new Set(
+                    tdata
+                        .filter((item) => item.addr.startsWith(selectedSi))
+                        .map((item) => item.addr.split(" ")[1])
+                ),
+            ];
+            setGuOptions(guList.sort());
+        }
+    };
+
+    // 기초자치단체 선택 핸들러
     const handleGuSelect = (e) => {
         e.preventDefault();
-        const selectedGu = selRef.current.value;
-        if (selectedGu) { 
-            const filteredData = tdata.filter(item => item.GUGUN_NM === selectedGu);
-            let tm = filteredData.map(item => (
+        const selectedGu = guRef.current.value;
+        const selectedSi = siRef.current.value;
+        if (selectedSi && selectedGu) {
+            const filteredData = tdata.filter(
+                (item) =>
+                    item.addr.startsWith(selectedSi) &&
+                    item.addr.includes(selectedGu)
+            );
+            const tm = filteredData.map((item) => (
                 <GallaryCard
-                    key={item.UC_SEQ}
-                    imgUrl={item.MAIN_IMG_NORMAL}
-                    title={item.TITLE}
-                    location={item.MAIN_PLACE}
-                    Ttag={item.PLACE}
+                    key={item.cpId}
+                    title={item.csNm}
+                    location={item.addr}
+                    Ttag={`충전기 상태: ${item.cpStat}`}
                 />
             ));
-            setCards(tm); 
+            setCards(tm);
         }
-    }
+    };
 
 
-    //컴포넌트 생성
+    //컴포넌트 초기화
     useEffect(() => {
-        let url = `https://apis.data.go.kr/6260000/FestivalService/getFestivalKr?`
-        url = url + `serviceKey=${process.env.REACT_APP_API_KEY}&pageNo=1&numOfRows=37&resultType=json`
+        let url = `https://api.odcloud.kr/api/EvInfoServiceV2/v1/getEvSearchList?`
+        url = url + `perPage=3106&serviceKey=${process.env.REACT_APP_API_KEY}`
 
         getFetchData(url)
     }, [])
 
+    // 광역자치단체 정보 설정
     useEffect(() => {
         if (!tdata) return;
         console.log(tdata);
-        let tm = tdata.map(item => item.GUGUN_NM);
-        tm = [...new Set(tm)].sort();
-        setOps(tm);
+        const siList = [...new Set(tdata.map((item) => item.addr.split(" ")[0]))];
+        setSiOptions(siList.sort());
     }, [tdata]);
 
+    // 기본 카드 생성
     useEffect(() => {
         if (!tdata) return
         console.log(tdata)
-        let tm = tdata.map(item => <GallaryCard key={item.UC_SEQ}
-            imgUrl={item.MAIN_IMG_NORMAL}
-            title={item.TITLE}
-            location={item.MAIN_PLACE}
-            Ttag={item.PLACE}
+        let tm = tdata.map(item => <GallaryCard 
+            key={item.cpId}
+            title={item.csNm}
+            location={item.addr}
+            Ttag={`충전기 상태: ${item.cpStat}`}
         />)
         setCards(tm)
     }, [tdata])
 
     return (
         <div className="w-full h-full flex flex-col justify-start items-start">
-            <form className="w-full flex justify-center items-center">
-                <div className="w-4/5 grid grid-cols-1 md:grid-cols-2 my-5">
-                    <label htmlFor="op"
-                        className="text-xl font-bold
-                                inline-flex justify-center items-center mr-5
-                               text-gray-900 dark:text-white">
-                        전기차 충전 정보
-                    </label>
-                    {ops && <TailSelect id="op"
-                        selRef={selRef}
-                        ops={ops}
-                        initText="---부산 지역 구 선택 ---"
-                        handleChange={handleGuSelect} />}
+            <form className="w-full flex flex-row justify-center items-center">
+                <div className="w-4/5 grid grid-cols-3 m-5">
+                    <div
+                        className="text-xl font-bold m-2 text-gray-900 dark:text-white"
+                    >
+                        지역 선택
+                    </div>
+                    <div className="mx-5">
+                        {siOptions && (
+                            <TailSelect
+                                id="op-si"
+                                selRef={siRef}
+                                ops={siOptions}
+                                initText="--- 광역자치단체 선택 ---"
+                                handleChange={handleSiSelect}
+                            />
+                        )}
+                    </div>
+                    <div className="mx-5">
+                        <TailSelect
+                            id="op-gu"
+                            selRef={guRef}
+                            ops={guOptions || []} // guOptions가 없으면 빈 배열 전달
+                            initText="--- 기초자치단체 선택 ---"
+                            handleChange={handleGuSelect}
+                        />
+                    </div>
                 </div>
             </form>
-            <div className="w-full grid grid-cols-1 
-                      md:grid-cols-2 lg:grid-cols-3 
-                      gap-2">
-                    {cards}
+            <div className="w-full grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-2">
+                {cards}
             </div>
         </div>
-    )
+    );
 }

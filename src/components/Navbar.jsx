@@ -14,7 +14,7 @@ export default function Navbar() {
         <header className='flex justify-between border-b border-gray-300 p-2'>
             <Link to='/' className='flex items-center text-2xl text-brand'>
                 <MdElectricCar />
-                <h4>부산 동래구 전기차 충전 시설 조회</h4>
+                <h4>전기차 충전소 찾기</h4>
             </Link>
             <nav className='flex items-center gap-4 font-semibold'>
                 <Link to='/'>HOME</Link>

@@ -1,4 +1,4 @@
-export default function GallaryCard({imgUrl, title, location, Ttag}) {
+export default function GallaryCard({title, location, Ttag}) {
     const Ttags = (Ttag.includes(',')? Ttag.split(',') : [...Ttag])
                     .map(item=>
                         <span className="inline-block bg-gray-200 
@@ -12,9 +12,6 @@ export default function GallaryCard({imgUrl, title, location, Ttag}) {
         
   return (
     <div className="w-full max-w-sm rounded overflow-hidden shadow-lg">
-            <img className="w-full" src={imgUrl.includes('http:')
-                                            ? imgUrl.replace('http:','https:'):imgUrl} 
-                                    alt={title}/>
                 <div className="px-6 py-4">
                     <div className="font-bold text-xl mb-2">{title}</div>
                     <p className="text-gray-700 text-base">
@@ -25,5 +22,5 @@ export default function GallaryCard({imgUrl, title, location, Ttag}) {
                     {Ttags}
                 </div>
         </div>
-  )
+  );
 }
