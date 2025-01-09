@@ -58,7 +58,7 @@ export default function MyPage() {
   return (
     <div className="container mx-auto p-4">
       {/* 사용자 정보 */}
-      <section className="mt-8 mb-6">
+      <section className="mt-6 mb-6">
         <h2 className="text-2xl font-bold mb-4">내 정보</h2>
         <User user={user} />
         <p className="text-gray-700 mt-2">

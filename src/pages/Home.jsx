@@ -101,7 +101,7 @@ export default function Home() {
     return (
         <div className="w-full h-full flex flex-col justify-start items-start">
             <form className="w-full flex flex-row justify-center items-center">
-                <div className="w-4/5 grid grid-cols-3 m-5">
+                <div className="w-4/5 grid grid-cols-3 m-4">
                     <div
                         className="text-xl font-bold m-2 text-gray-900 dark:text-white"
                     >
@@ -129,7 +129,7 @@ export default function Home() {
                     </div>
                 </div>
             </form>
-            <div className="w-full h-full grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+            <div className="w-full h-full grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 p-3">
                 {cards}
             </div>
         </div>

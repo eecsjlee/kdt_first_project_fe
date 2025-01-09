@@ -41,7 +41,7 @@ export default function GuestBook() {
 
   return (
     <section className='w-full text-center'>
-      <h2 className='text-2xl font-bold my-4'>방명록</h2>
+      <h2 className='text-2xl font-bold my-6'>방명록</h2>
       <button
         className='bg-blue-500 text-white mx-4 px-3 py-1 rounded-md mb-4 border border-blue-500 hover:brightness-110 float-right'
         onClick={handleWriteClick}
