@@ -32,7 +32,7 @@ export default function GallaryCard({ title, location, Ttag, chargeType, chargeS
     };
 
     // 충전기 상태가 '충전가능'일 경우 옅은 파란색 배경으로 설정
-    const cardBackgroundColor = chargeStatus === '1' ? 'bg-blue' : 'bg-red-100';
+    const cardBackgroundColor = chargeStatus === '1' ? 'bg-blue-100' : 'bg-red-100';
 
     return (
         <div className={`w-full max-w-sm rounded overflow-hidden shadow-lg ${cardBackgroundColor}`}>

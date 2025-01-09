@@ -27,7 +27,10 @@ export default function MyPage() {
           const userPosts = Object.values(data).filter(
             (post) => post.user.name === user.displayName
           );
-          setPosts(userPosts);
+
+          // 작성일을 기준으로 내림차순 정렬
+          const sortedPosts = userPosts.sort((a, b) => new Date(b.date) - new Date(a.date));
+          setPosts(sortedPosts);
         } else {
           setPosts([]);
         }
@@ -55,7 +58,7 @@ export default function MyPage() {
   return (
     <div className="container mx-auto p-4">
       {/* 사용자 정보 */}
-      <section className="mb-6">
+      <section className="mt-8 mb-6">
         <h2 className="text-2xl font-bold mb-4">내 정보</h2>
         <User user={user} />
         <p className="text-gray-700 mt-2">
@@ -65,16 +68,16 @@ export default function MyPage() {
 
       {/* 사용자가 작성한 게시물 */}
       <section>
-        <h2 className="text-2xl font-bold mb-4">내 게시물</h2>
+        <h2 className="text-2xl font-bold mt-20 mb-6">내 게시물</h2>
         {posts.length > 0 ? (
           <ul>
             {posts.map((post) => (
               <li key={post.id} className="p-4 border rounded mb-2">
-                <p className="font-bold">{post.content}</p>
-                <p className="text-sm text-gray-500">작성일: {post.date}</p>
+                <p className="">{post.content}</p>
+                <p className="mt-5">작성일: {post.date}</p>
                 <button
                   onClick={() => handleDeletePost(post.id)}
-                  className="text-red-500 mt-2"
+                  className="text-red-600 mt-2 text-right"
                 >
                   삭제
                 </button>
