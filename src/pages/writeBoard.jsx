@@ -1,53 +1,53 @@
 import React, { useState } from 'react';
-import Button from '../ui/Button';
-import { useMutation } from '@tanstack/react-query';
-import { postBoard } from '../api/firebase';
+import { postBoard } from '../api/firebase'; // Firebase 관련 API
+import Button from '../ui/Button'; // 버튼 컴포넌트
 
 export default function WriteBoard() {
-    const [contents, setContents] = useState({});
-    const [isSubmitting, setIsSubmitting] = useState(false);
-    const [success, setSuccess] = useState(null);
+  const [content, setContent] = useState(''); // 글 내용 상태
+  const [isSubmitting, setIsSubmitting] = useState(false); // 제출 중 상태
+  const [success, setSuccess] = useState(null); // 성공 메시지 상태
 
-    const postBoard = useMutation((contents) => postBoard(contents), {
-        onSuccess: () => {
-          setSuccess('새 글이 등록되었습니다.');
-          setTimeout(() => setSuccess(null), 4000);
-        },
-      });
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    setIsSubmitting(true);
 
-    const handleChange = (e) => {
-        const { name, value } = e.target;
-        setContents((prev) => ({ ...prev, [name]: value }));
-      };
+    try {
+      await postBoard({ content }); // Firebase에 데이터 저장
+      setSuccess('글이 성공적으로 등록되었습니다!');
+      setContent(''); // 입력 필드 초기화
+      setTimeout(() => setSuccess(null), 4000); // 4초 후 성공 메시지 제거
+    } catch (error) {
+      console.error('글 등록 중 오류:', error);
+      alert('글 등록에 실패했습니다.');
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
 
-      // 방명록 내용을 Firebase에 등록함
-      const handleSubmit = (e) => {
-        e.preventDefault();
-        postBoard(contents).then(() => {
-            setSuccess('성공적으로 제품이 추가되었습니다.');
-            setTimeout(() => {setSuccess(null);}, 4000);
-        })
-        .finally(() => setIsSubmitting(false));
-    };
-
-    return (
-        <section className='w-full text-center'>
-          <h2 className='text-2xl font-bold my-4'>새 글 작성</h2>
-          {success && <p className='my-2'>✅ {success}</p>}
-          <form className='flex flex-col px-12' onSubmit={handleSubmit}>
-            <input
-              type='text'
-              name='content'
-              value={contents.content ?? ''}
-              placeholder='내용'
-              required
-              onChange={handleChange}
-            />
-            <Button
-              text={isSubmitting ? '등록 중...' : '등록하기'}
-              disabled={isSubmitting}
-            />
-          </form>
-        </section>
-      );
+  return (
+    <section className="w-full max-w-lg mx-auto my-10 p-6 bg-white rounded-lg shadow-md">
+      <h2 className="text-2xl font-bold text-center mb-4">새 글 작성</h2>
+      {success && (
+        <p className="mb-4 text-green-600 font-semibold text-center">
+          ✅ {success}
+        </p>
+      )}
+      <form onSubmit={handleSubmit} className="flex flex-col gap-4">
+        <textarea
+          name="content"
+          value={content}
+          placeholder="내용을 입력하세요..."
+          onChange={(e) => setContent(e.target.value)}
+          rows="5"
+          className="w-full p-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-400"
+          required
+        ></textarea>
+        <Button
+          text={isSubmitting ? '등록 중...' : '등록하기'}
+          disabled={isSubmitting}
+          className="bg-indigo-600 text-white font-bold py-2 px-4 rounded hover:bg-indigo-500"
+        />
+      </form>
+    </section>
+  );
 }

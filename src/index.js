@@ -7,12 +7,12 @@ import App from './App';
 import Home from './pages/Home';
 import NotFound from './pages/NotFound';
 import About from './pages/About';
-import ProductDetail from './pages/ProductDetail';
-import MyCart from './pages/MyCart';
 import ProtectedRoute from './pages/ProtectedRoute';
 import GuestBook from './pages/GuestBook';
 import WriteBoard from './pages/WriteBoard';
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
+import MyPage from './pages/MyPage';
+import BoardList from './pages/BoardList';
 
 const queryClient = new QueryClient();
 
@@ -39,12 +39,12 @@ const router = createBrowserRouter([
         element: <WriteBoard />,
       },
       {
-        path: '/product/:id',
-        element: <ProductDetail />,
+        path: '/list',
+        element: <BoardList />,
       },
       {
-        path: '/carts',
-        element: <MyCart />
+        path: '/mypage',
+        element: <MyPage />
       },
     ],
   },

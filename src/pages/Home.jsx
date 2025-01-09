@@ -2,7 +2,6 @@ import React from 'react';
 import { useEffect, useState, useRef } from "react";
 import TailSelect from '../ui/TailSelect';
 import GallaryCard from '../ui/GallaryCard';
-import { v4 as uuid } from 'uuid';
 
 export default function Home() {
     const [tdata, setTdata] = useState(); // 전기차 충전소 정보
@@ -11,19 +10,15 @@ export default function Home() {
     const siRef = useRef(); // 광역자치단체 선택 Ref
     const guRef = useRef(); // 기초자치단체 선택 Ref
     const [cards, setCards] = useState();
-    const uniqueKey = uuid();
 
     // data fetch
     const getFetchData = (url) => {
         fetch(url)
             .then(resp => resp.json())
             .then(data => {
-                console.log("fetch", data)
                 setTdata(data.data)
-            })
-            ;
-
-        console.log("getFetchData", url)
+            }
+        );
     }
 
     // 광역자치단체 선택 핸들러
@@ -58,9 +53,11 @@ export default function Home() {
                 key={`${item.csId}-${item.cpId}`}
                 title={item.csNm}  // 충전소 명칭
                 location={item.addr}  // 주소
-                cpType={item.cpTp}  // 충전방식
+                chargeType={item.cpTp}  // 충전방식
                 chargeStatus={item.cpStat}  // 충전기 상태
                 statUpdateTime={item.statUpdatetime}  // 확인일자
+                lat={parseFloat(item.lat)}  // 위도
+                longi={parseFloat(item.longi)}  // 경도
                 />
             ));
             setCards(tm);
@@ -79,7 +76,6 @@ export default function Home() {
     // 광역자치단체 정보 설정
     useEffect(() => {
         if (!tdata) return;
-        console.log(tdata);
         const siList = [...new Set(tdata.map((item) => item.addr.split(" ")[0]))];
         setSiOptions(siList.sort());
     }, [tdata]);
@@ -87,16 +83,18 @@ export default function Home() {
     // 기본 카드 생성
     useEffect(() => {
         if (!tdata) return
-        console.log(tdata)
         let tm = tdata.map(item => 
             <GallaryCard
             key={`${item.csId}-${item.cpId}`}
             title={item.csNm}  // 충전소 명칭
             location={item.addr}  // 주소
-            cpType={item.cpTp}  // 충전방식
+            chargeType={item.cpTp}  // 충전방식
             chargeStatus={item.cpStat}  // 충전기 상태
             statUpdateTime={item.statUpdatetime}  // 확인일자
-        />)
+            lat={parseFloat(item.lat)}  // 위도
+            longi={parseFloat(item.longi)}  // 경도
+            />
+        )
         setCards(tm)
     }, [tdata])
 
@@ -131,7 +129,7 @@ export default function Home() {
                     </div>
                 </div>
             </form>
-            <div className="w-full grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-2">
+            <div className="w-full h-full flex flex-wrap justify-center items-center gap-8">
                 {cards}
             </div>
         </div>

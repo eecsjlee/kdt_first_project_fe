@@ -1,4 +1,4 @@
-export default function GallaryCard({ title, location, Ttag, chargeType, chargeStatus, cpType, statUpdateTime }) {
+export default function GallaryCard({ title, location, Ttag, chargeType, chargeStatus, statUpdateTime }) {
 
     // 충전기 상태를 텍스트로 변환
     const getChargeStatusText = (status) => {
@@ -31,15 +31,18 @@ export default function GallaryCard({ title, location, Ttag, chargeType, chargeS
         return typeMap[type] || '알 수 없음';
     };
 
+    // 충전기 상태가 '충전가능'일 경우 옅은 파란색 배경으로 설정
+    const cardBackgroundColor = chargeStatus === '1' ? 'bg-blue' : 'bg-red-100';
+
     return (
-        <div className="w-full max-w-sm rounded overflow-hidden shadow-lg">
-            <div className="px-6 py-4">
+        <div className={`w-full max-w-sm rounded overflow-hidden shadow-lg ${cardBackgroundColor}`}>
+            <div className="px-6 py-4 flex flex-col justify-center">
                 <div className="font-bold text-xl mb-2">{title}</div>
                 <p className="text-gray-700 text-base">
                     <strong>주소:</strong> {location}
                 </p>
                 <p className="text-gray-700 text-base">
-                    <strong>충전방식:</strong> {getChargeTypeText(cpType)}
+                    <strong>충전방식:</strong> {getChargeTypeText(chargeType)}
                 </p>
                 <p className="text-gray-700 text-base">
                     <strong>충전기 상태:</strong> {getChargeStatusText(chargeStatus)}
@@ -48,7 +51,7 @@ export default function GallaryCard({ title, location, Ttag, chargeType, chargeS
                     <strong>확인일자:</strong> {statUpdateTime}
                 </p>
             </div>
-            <div className="px-6 pt-4 pb-2">
+            <div className="px-6 pt-4 pb-2 flex flex-wrap">
                 {Ttag}
             </div>
         </div>

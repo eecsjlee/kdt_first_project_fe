@@ -6,7 +6,6 @@ import User from './User';
 import Button from '../ui/Button';
 import { useAuthContext } from '../context/AuthContext';
 
-
 export default function Navbar() {
     const {user, login, logout } = useAuthContext();
     return (
@@ -24,7 +23,7 @@ export default function Navbar() {
                         <BsFillPencilFill />
                     </Link>
                 )}
-                {user && <Link to='/carts'>My Page</Link>}
+                {user && <Link to='/mypage'>My Page</Link>}
                 {user && <User user={user} />}
                 {!user && <Button text={'Login'} onClick={login} />}
                 {user && <Button text={'Logout'} onClick={logout} />}
