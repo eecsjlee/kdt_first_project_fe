@@ -18,11 +18,14 @@ export default function Navbar() {
                 <Link to='/'>HOME</Link>
                 <Link to='/about'>ABOUT</Link>
                 <Link to='/guestbook'>방명록</Link>
-                {user && user.isAdmin && (
+                <Link to='/write' className='text-2xl'>
+                    <BsFillPencilFill />
+                </Link>
+                {/* {user && user.isAdmin && (
                     <Link to='/write' className='text-2xl'>
                         <BsFillPencilFill />
                     </Link>
-                )}
+                )} */}
                 {user && <Link to='/mypage'>My Page</Link>}
                 {user && <User user={user} />}
                 {!user && <Button text={'Login'} onClick={login} />}
