@@ -6,7 +6,6 @@ import App from './App';
 import Home from './pages/Home';
 import NotFound from './pages/NotFound';
 import About from './pages/About';
-import ProtectedRoute from './pages/ProtectedRoute';
 import GuestBook from './pages/GuestBook';
 import WriteBoard from './pages/WriteBoard';
 import MyPage from './pages/MyPage';

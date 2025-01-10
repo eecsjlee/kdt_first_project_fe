@@ -1,4 +1,4 @@
-export default function GallaryCard({ title, location, Ttag, chargeType, chargeStatus, statUpdateTime }) {
+export default function GallaryCard({ title, location, chargeType, chargeStatus, statUpdateTime }) {
 
     // 충전기 상태를 텍스트로 변환
     const getChargeStatusText = (status) => {
@@ -38,8 +38,8 @@ export default function GallaryCard({ title, location, Ttag, chargeType, chargeS
         <div className={`w-full max-w-sm rounded overflow-hidden shadow-lg ${cardBackgroundColor}`}>
             <div className="px-6 py-4 flex flex-col justify-center">
                 <div className="font-bold text-xl mb-2">{title}</div>
-                <p className="text-gray-700 text-base">
-                    <strong>주소:</strong> {location}
+                <p className="text-gray-700 text-base mb-2">
+                    {location}
                 </p>
                 <p className="text-gray-700 text-base">
                     <strong>충전방식:</strong> {getChargeTypeText(chargeType)}
@@ -50,9 +50,6 @@ export default function GallaryCard({ title, location, Ttag, chargeType, chargeS
                 <p className="text-gray-700 text-base">
                     <strong>확인일자:</strong> {statUpdateTime}
                 </p>
-            </div>
-            <div className="px-6 pt-4 pb-2 flex flex-wrap">
-                {Ttag}
             </div>
         </div>
     );
